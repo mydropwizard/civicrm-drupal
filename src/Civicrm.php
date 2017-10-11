@@ -74,11 +74,12 @@ class Civicrm {
    * Synchronize a Drupal account with CiviCRM. This is a wrapper for CRM_Core_BAO_UFMatch::synchronize().
    *
    * @param AccountInterface $account
+   * @param bool $update
    * @param string $contact_type
    */
-  public function synchronizeUser(AccountInterface $account, $contact_type = 'Individual') {
+  public function synchronizeUser(AccountInterface $account, $update = TRUE, $contact_type = 'Individual') {
     $this->initialize();
-    \CRM_Core_BAO_UFMatch::synchronize($account, FALSE, 'Drupal', $this->getCtype($contact_type));
+    \CRM_Core_BAO_UFMatch::synchronize($account, $update, 'Drupal', $this->getCtype($contact_type));
   }
 
   /**

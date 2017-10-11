@@ -13,20 +13,40 @@ function civicrm_user_login(AccountInterface $account) {
  * Implements hook_user_insert().
  */
 function civicrm_user_insert(AccountInterface $account) {
+  /** @var \Drupal\civicrm\Civicrm $civicrm */
   $civicrm = \Drupal::service('civicrm');
-  $civicrm->synchronizeUser($account);
 
-  // As per CRM-7858, the email address in CiviCRM isn't always set
-  // with a call to synchronize(). So we force this through.
-  $contact_id = \CRM_Core_BAO_UFMatch::getContactId($account->id());
-  if (empty($contact_id)) {
+  try {
+    $civicrm->initialize();
+  }
+  catch (\Exception $e) {
     return;
   }
-  \CRM_Core_BAO_UFMatch::updateContactEmail($contact_id, $account->getEmail());
 
-  // Process any profile form fields that may have been submitted.
-  // In particular, this will pick up form fields that were submitted on the user_registration page.
-  \CRM_Core_BAO_UFGroup::getEditHTML($contact_id, '', 2, TRUE, FALSE, NULL, FALSE, $civicrm->getCtype());
+  $config = CRM_Core_Config::singleton();
+  if ($config->inCiviCRM) {
+    return;
+  }
+
+  // Did civicrm generate this page, or is it via a user hook?
+  if (isset($_POST['_qf_default'])) {
+    $civicrm->synchronizeUser($account, TRUE);
+
+    // As per CRM-7858, the email address in CiviCRM isn't always set
+    // with a call to synchronize(). So we force this through.
+    $contact_id = \CRM_Core_BAO_UFMatch::getContactId($account->id());
+    if (empty($contact_id)) {
+      return;
+    }
+    \CRM_Core_BAO_UFMatch::updateContactEmail($contact_id, $account->getEmail());
+
+    // Process any profile form fields that may have been submitted.
+    // In particular, this will pick up form fields that were submitted on the user_registration page.
+    \CRM_Core_BAO_UFGroup::getEditHTML($contact_id, '', 2, TRUE, FALSE, NULL, FALSE, $civicrm->getCtype());
+  }
+  else {
+    $civicrm->synchronizeUser($account, FALSE);
+  }
 }
 
 /**
