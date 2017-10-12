@@ -1,0 +1,3 @@
+sync_method:
+  login: true
+cron_limit: 150

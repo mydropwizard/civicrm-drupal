@@ -1,3 +1,14 @@
+civicrm_member_roles.settings:
+  type: config_entity
+  label: 'CiviMember Roles Sync settings'
+  mapping:
+    sync_method:
+      type: sequence
+      label: 'Sync method'
+    cron_limit:
+      type: integer
+      label: 'Memberships synchronized on cron'
+
 civicrm_member_roles.civicrm_member_role_rule.*:
   type: config_entity
   label: 'Civicrm member role rule config'
