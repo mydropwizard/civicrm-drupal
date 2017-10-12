@@ -1,0 +1,15 @@
+civicrm_member_roles.admin_config_civicrm.civicrm_member_roles_configure:
+  path: '/admin/config/civicrm/civicrm-member-roles/configure'
+  defaults:
+    _form: '\Drupal\civicrm_member_roles\Form\SettingsForm'
+    _title: 'CiviMember Roles Sync'
+  requirements:
+    _permission: 'access civicrm member role setting'
+
+civicrm_member_roles.admin_config_civicrm.civicrm_member_roles_manual_sync:
+  path: '/admin/config/civicrm/civicrm-member-roles/manual-sync'
+  defaults:
+    _form: '\Drupal\civicrm_member_roles\Form\ManualSyncForm'
+    _title: 'CiviMember Roles Sync'
+  requirements:
+    _permission: 'access civicrm member role setting'

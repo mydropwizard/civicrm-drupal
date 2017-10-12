@@ -1,0 +1,12 @@
+civicrm_member_roles.civicrm_member_role_rule.*:
+  type: config_entity
+  label: 'Civicrm member role rule config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    uuid:
+      type: string
