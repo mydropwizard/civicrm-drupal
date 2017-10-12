@@ -35,23 +35,119 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *     "edit-form" = "/admin/config/civicrm/civicrm-member-roles/rule/{civicrm_member_role_rule}/edit",
  *     "delete-form" = "/admin/config/civicrm/civicrm-member-roles/rule/{civicrm_member_role_rule}/delete",
  *     "collection" = "/admin/config/civicrm/civicrm-member-roles"
+ *   },
+ *   config_export = {
+ *     "id",
+ *     "label",
+ *     "role",
+ *     "type",
+ *     "current",
+ *     "expired",
  *   }
  * )
  */
 class CivicrmMemberRoleRule extends ConfigEntityBase implements CivicrmMemberRoleRuleInterface {
 
   /**
-   * The Civicrm member role rule ID.
+   * The association rule ID.
    *
    * @var string
    */
   protected $id;
 
   /**
-   * The Civicrm member role rule label.
+   * The association rule label.
    *
    * @var string
    */
   protected $label;
+
+  /**
+   * The association rule role.
+   *
+   * @var string
+   */
+  protected $role;
+
+  /**
+   * The association rule membership type.
+   *
+   * @var string
+   */
+  protected $type;
+
+  /**
+   * The association rule add statuses.
+   *
+   * @var array
+   */
+  protected $current = [];
+
+  /**
+   * The association rule remove statuses.
+   *
+   * @var array
+   */
+  protected $expired = [];
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRole() {
+    return $this->role;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setRole($role) {
+    $this->role = $role;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getType() {
+    return $this->type;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setType($type) {
+    $this->type = $type;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCurrentStatuses() {
+    return $this->current;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setCurrentStatuses(array $current) {
+    $this->current = $current;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getExpiredStatuses() {
+    return $this->expired;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setExpiredStatuses(array $expired) {
+    $this->expired = $expired;
+    return $this;
+  }
 
 }

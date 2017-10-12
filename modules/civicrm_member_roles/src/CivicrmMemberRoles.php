@@ -43,7 +43,7 @@ class CivicrmMemberRoles {
     foreach ($result['values'] as $value) {
       $statuses[$value['id']] = $value['name'];
     }
-    
+
     return $statuses;
   }
 

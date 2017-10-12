@@ -5,6 +5,9 @@ namespace Drupal\civicrm_member_roles\Form;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
+/**
+ * Class SettingsForm.
+ */
 class SettingsForm extends ConfigFormBase {
 
   /**

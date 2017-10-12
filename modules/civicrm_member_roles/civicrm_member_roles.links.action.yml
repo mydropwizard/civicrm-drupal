@@ -3,4 +3,3 @@ entity.civicrm_member_role_rule.add_form:
   title: 'Add Association Rule'
   appears_on:
     - entity.civicrm_member_role_rule.collection
-

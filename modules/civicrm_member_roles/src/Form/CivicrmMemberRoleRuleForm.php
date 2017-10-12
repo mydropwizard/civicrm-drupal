@@ -42,7 +42,9 @@ class CivicrmMemberRoleRuleForm extends EntityForm {
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
 
+    /** @var \Drupal\civicrm_member_roles\Entity\CivicrmMemberRoleRuleInterface $rule */
     $rule = $this->entity;
+
     $form['label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Label'),
@@ -71,45 +73,50 @@ class CivicrmMemberRoleRuleForm extends EntityForm {
       '#description' => $this->t('Choose a CiviMember Membership Type and a Drupal Role below. This will associate that Membership with the Role. If you would like the have the same Membership be associated with more than one role, you will need to add a second association rule after you have completed this one.'),
     ];
 
-    $form['add_rule']['select_membership'] = array(
+    $form['add_rule']['membership_type'] = [
       '#type' => 'select',
       '#title' => $this->t('Select a CiviMember Membership Type'),
       '#options' => $membership_options,
       '#required' => TRUE,
-    );
+      '#default_value' => $this->entity->getType(),
+    ];
 
-    $form['add_rule']['select_role'] = array(
+    $form['add_rule']['role'] = [
       '#type' => 'select',
       '#title' => $this->t('Select a Drupal Role'),
       '#options' => [],
       '#required' => TRUE,
-    );
+      '#default_value' => $this->entity->getRole(),
+    ];
     foreach ($roles as $role) {
-      $form['add_rule']['select_role']['#options'][$role->id()] = $role->label();
+      if ($role->id() != 'authenticated') {
+        $form['add_rule']['role']['#options'][$role->id()] = $role->label();
+      }
     }
 
-    $form['status_code'] = array(
+    $form['status_code'] = [
       '#type' => 'fieldset',
-      '#title' => t('CiviMember Status Rules'),
+      '#title' => $this->t('CiviMember Status Rules'),
       '#description' => $this->t('Select which CiviMember Statuses will be used to add or remove from the Drupal Role. An "Add" status rule will add the above role to a user account. A "Removal" status rule will remove the above role from a user account.'),
-      '#tree' => TRUE,
-    );
+    ];
 
-    $form['status_code']['current'] = array(
+    $form['status_code']['current'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Add Statuses'),
       '#description' => $this->t("Select all CiviMember Status Rule(s) that represent an 'add' status."),
       '#options' => $status_options,
       '#required' => TRUE,
-    );
+      '#default_value' => $this->entity->getCurrentStatuses(),
+    ];
 
-    $form['status_code']['expired'] = array(
+    $form['status_code']['expired'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Removal Statuses'),
       '#description' => $this->t("Select all CiviMember Status Rule(s) that represent a 'removal' status."),
       '#options' => $status_options,
       '#required' => TRUE,
-    );
+      '#default_value' => $this->entity->getExpiredStatuses(),
+    ];
 
     return $form;
   }
@@ -118,7 +125,14 @@ class CivicrmMemberRoleRuleForm extends EntityForm {
    * {@inheritdoc}
    */
   public function save(array $form, FormStateInterface $form_state) {
+    /** @var \Drupal\civicrm_member_roles\Entity\CivicrmMemberRoleRuleInterface $rule */
     $rule = $this->entity;
+
+    $rule->setType($form_state->getValue('membership_type'))
+      ->setRole($form_state->getValue('role'))
+      ->setCurrentStatuses($form_state->getValue('current'))
+      ->setExpiredStatuses($form_state->getValue('expired'));
+
     $status = $rule->save();
 
     switch ($status) {
