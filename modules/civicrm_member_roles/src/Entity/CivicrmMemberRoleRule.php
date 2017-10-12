@@ -9,7 +9,7 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *
  * @ConfigEntityType(
  *   id = "civicrm_member_role_rule",
- *   label = @Translation("Civicrm member role rule"),
+ *   label = @Translation("Association Rule"),
  *   handlers = {
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "list_builder" = "Drupal\civicrm_member_roles\CivicrmMemberRoleRuleListBuilder",

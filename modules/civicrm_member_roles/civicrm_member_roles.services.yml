@@ -1,0 +1,4 @@
+services:
+  civicrm_member_roles:
+    class: \Drupal\civicrm_member_roles\CivicrmMemberRoles
+    arguments: ['@civicrm']
