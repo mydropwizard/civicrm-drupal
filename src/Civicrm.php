@@ -79,7 +79,15 @@ class Civicrm {
    */
   public function synchronizeUser(AccountInterface $account, $update = TRUE, $contact_type = 'Individual') {
     $this->initialize();
+    //dsm('old session');
+    //dsm($_SESSION);
+    \Drupal::logger('debug')->debug('old session');
+    \Drupal::logger('debug')->debug(print_r($_SESSION, TRUE));
     \CRM_Core_BAO_UFMatch::synchronize($account, $update, 'Drupal', $this->getCtype($contact_type));
+    \Drupal::logger('debug')->debug('new session');
+    \Drupal::logger('debug')->debug(print_r($_SESSION, TRUE));
+    //dsm('new session');
+    //dsm($_SESSION);
   }
 
   /**

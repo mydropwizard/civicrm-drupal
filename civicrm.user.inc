@@ -7,7 +7,16 @@ use \Drupal\Core\Session\AccountInterface;
  */
 function civicrm_user_login(AccountInterface $account) {
   \Drupal::service('civicrm')->synchronizeUser($account);
+  //\Drupal::logger('debug')->debug('login session: ' . print_r($_SESSION, TRUE));
 }
+
+/*
+if (!function_exists('drupal_session_start')) {
+  function drupal_session_start() {
+    // Empty stub.
+  }
+}
+*/
 
 /**
  * Implements hook_user_insert().
@@ -28,6 +37,8 @@ function civicrm_user_insert(AccountInterface $account) {
     return;
   }
 
+  \Drupal::logger('debug')->debug('session_id before: ' . session_id());
+
   // Did civicrm generate this page, or is it via a user hook?
   if (isset($_POST['_qf_default'])) {
     $civicrm->synchronizeUser($account, TRUE);
@@ -47,6 +58,11 @@ function civicrm_user_insert(AccountInterface $account) {
   else {
     $civicrm->synchronizeUser($account, FALSE);
   }
+
+  \Drupal::logger('debug')->debug('session_id after: ' . session_id());
+
+  \Drupal::logger('debug')->debug('current request: ' . print_r(\Drupal::requestStack()->getCurrentRequest(), TRUE));
+  \Drupal::logger('debug')->debug('master request: ' . print_r(\Drupal::requestStack()->getMasterRequest(), TRUE));
 }
 
 /**
