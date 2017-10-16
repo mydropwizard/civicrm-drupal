@@ -48,6 +48,26 @@ class CivicrmMemberRoles {
   }
 
   /**
+   * Get information for a membership type.
+   *
+   * @param int $id
+   *   The type ID.
+   *
+   * @return array|null
+   *   The type, or NULL if not found.
+   */
+  public function getType($id) {
+    try {
+      $result = civicrm_api3('MembershipType', 'getsingle', ['id' => $id]);
+    }
+    catch (\Exception $e) {
+      $result = NULL;
+    }
+
+    return $result;
+  }
+
+  /**
    * Gets membership types.
    *
    * @return array
