@@ -130,8 +130,8 @@ class CivicrmMemberRoleRuleForm extends EntityForm {
 
     $rule->setType($form_state->getValue('membership_type'))
       ->setRole($form_state->getValue('role'))
-      ->setCurrentStatuses($form_state->getValue('current'))
-      ->setExpiredStatuses($form_state->getValue('expired'));
+      ->setCurrentStatuses(array_filter($form_state->getValue('current')))
+      ->setExpiredStatuses(array_filter($form_state->getValue('expired')));
 
     $status = $rule->save();
 
