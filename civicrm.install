@@ -6,10 +6,12 @@
 function civicrm_install() {
   // If civicrm.settings.php file is already present, we assume CiviCRM
   // is already installed and abort.
+  /*
   if (file_exists(\Drupal::service('kernel')->getSitePath() . '/civicrm.settings.php')) {
     drupal_set_message(t("CiviCRM appears to have already been installed. Skipping full installation."));
     return;
   }
+  */
 
   $civicrm_base = _civicrm_find_civicrm();
 
@@ -100,6 +102,12 @@ function civicrm_requirements($phase) {
   // that will be checked by checkAll().
   foreach ($file_paths as $path) {
     @chmod($path, 0755);
+  }
+
+  // When installing Drupal via Drush, the db config is empty for some reason,
+  // so we bail here.
+  if (empty($db_config)) {
+    return $requirements;
   }
 
   foreach ($install_requirements->checkAll(array('db_config' => $db_config, 'file_paths' => $file_paths)) as $key => $result) {
