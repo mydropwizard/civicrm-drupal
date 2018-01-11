@@ -246,12 +246,6 @@ function civicrm_form_user_register_form_alter(&$form, &$form_state, $form_id) {
   // We need the CiviCRM core Javascript.
   CRM_Core_Resources::singleton()->addCoreResources();
 
-  // Need to disable the page cache.
-  \Drupal::service('page_cache_kill_switch')->trigger();
-
-  // We need the CiviCRM core Javascript.
-  CRM_Core_Resources::singleton()->addCoreResources();
-
   $form['civicrm_profile_register'] = array(
     '#markup' => \Drupal\Core\Render\Markup::create($html),
     '#cache' => [
